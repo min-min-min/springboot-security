@@ -1,0 +1,48 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.6.RELEASE'
+        jjwtVersion = '0.7.0'
+    }
+    repositories {
+        mavenLocal()
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+jar {
+    baseName = 'chenjing'
+    version = '2.0'
+}
+version = '1.0'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+//先从阿里云下载  没有就从maven center 下载
+repositories {
+    mavenLocal()
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    mavenCentral()
+}
+
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-jdbc')
+    compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.1')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    // compile group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.0.8.RELEASE'
+    //compile group: 'com.auth0', name: 'java-jwt', version: '3.2.0'
+    compile 'io.jsonwebtoken:jjwt:0.7.0'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
+    compile 'com.alibaba:druid-spring-boot-starter:1.1.3'
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.security:spring-security-test')
+}
