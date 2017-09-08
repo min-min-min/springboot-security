@@ -34,6 +34,18 @@ public class BaseController {
         return "you has user role";
     }
 
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String c() {
+        return "you has admin role";
+    }
+
+    @GetMapping("/add")
+    @PreAuthorize("hasAnyAuthority('add')")
+    public String d() {
+        return "you has add auth";
+    }
+
     @PostMapping("/auth/token")
     public String createAuthenticationToken(
             @RequestParam("username") String username,

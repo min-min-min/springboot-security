@@ -4,6 +4,8 @@ import com.chenjing.springbootauth.server.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -20,10 +22,13 @@ import java.util.Map;
 @Component
 public class JwtTokenUtil implements Serializable {
 
+    private static final Logger log = LoggerFactory.getLogger(JwtTokenUtil.class);
+
     private static final long serialVersionUID = -3301605591108950415L;
 
     private static final String CLAIM_KEY_USERNAME = "sub";
     private static final String CLAIM_KEY_CREATED = "created";
+    private static final String CLAIM_KEY_ROLES = "roles";
 
     @Value("${jwt.secret}")
     private String secret;
@@ -35,6 +40,7 @@ public class JwtTokenUtil implements Serializable {
         String username;
         try {
             final Claims claims = getClaimsFromToken(token);
+            claims.forEach((x, y) -> log.info("解析出来的JWT中的数据=>" + x + "====" + y));
             username = claims.getSubject();
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,6 +104,7 @@ public class JwtTokenUtil implements Serializable {
         Map<String, Object> claims = new HashMap<>();
         claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
         claims.put(CLAIM_KEY_CREATED, new Date());
+        claims.put(CLAIM_KEY_ROLES, userDetails.getAuthorities().toString());
         return generateToken(claims);
     }
 
@@ -128,6 +135,7 @@ public class JwtTokenUtil implements Serializable {
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
+        log.info("开始验证token是否合法以及和数据库是否匹配");
         User user = (User) userDetails;
         final String username = getUsernameFromToken(token);
         final Date created = getCreatedDateFromToken(token);
