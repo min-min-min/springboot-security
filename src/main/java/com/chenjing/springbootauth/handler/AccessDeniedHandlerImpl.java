@@ -18,6 +18,8 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        response.getWriter().print("you don't have Authorization");
+        //response.setHeader("Content-type", "application/json;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().print("you don't have Authorization,details=>"+accessDeniedException.getMessage());
     }
 }
