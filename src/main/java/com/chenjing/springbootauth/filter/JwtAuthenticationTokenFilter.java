@@ -52,6 +52,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
+                /**
+                 * 如果不设置用户的权限和角色到上下文 那么访问资源将会被受限
+                 */
                 if (jwtTokenUtil.validateToken(authToken, userDetails)) {
 
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
