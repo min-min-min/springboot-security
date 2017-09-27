@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>show order infomation</title>
+    <style>
+        table.dataintable {
+            margin-top: 10px;
+            border-collapse: collapse;
+            border: 1px solid #aaa;
+            width: 600px;
+        }
+
+        table.dataintable th {
+            vertical-align: baseline;
+            padding: 5px 15px 5px 5px;
+            background-color: #d5d5d5;
+            border: 1px solid #aaa;
+            text-align: left;
+        }
+
+        table.dataintable td {
+            vertical-align: text-top;
+            padding: 5px 15px 5px 5px;
+            background-color: #efefef;
+            border: 1px solid #aaa;
+        }
+    </style>
+</head>
+<body>
+<form action="/showorderinfo" method="POST">
+    OrderIds:<br/>
+    <textarea rows="10" cols="50" id="orderIds" name="orderIds"></textarea>
+    <input type="submit" value="submit"/>
+</form>
+<div id="noExist">
+不存在的orderid:
+<div style='width:600px;word-wrap:break-word' th:text="${orderIds}"></div></div>
+<br/>
+<div id="exist">
+存在的orderid:
+<div style='width:800px;word-wrap:break-word' th:text="${sb02}"></div></div>
+<br/>
+<br/>
+<!--不存在的orderid:
+<div style='width:800px;word-wrap:break-word' th:text="${sb}"></div>-->
+<br/>
+<table class="dataintable" id="table">
+    <tbody>
+    <tr>
+        <th>订单ID</th>
+        <th>状态</th>
+        <th>导入时间</th>
+    </tr>
+    <tr th:each="order,status:${order_arr}">
+        <td th:text="${order}"></td>
+        <td th:text="${localstate_arr[status.index]}"></td>
+        <td th:text="${datetime[status.index]}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
+<script th:inline="javascript">
+    window.onload = function () {
+        var osm = [[${osm}]]
+        document.getElementById("table").style.display = "none";
+        document.getElementById("noExist").style.display = "none";
+        document.getElementById("exist").style.display = "none";
+        if (osm == null || osm.length==0) {
+            console.log("if")
+            document.getElementById("table").style.display = "none";
+            document.getElementById("exist").style.display = "none";
+            document.getElementById("noExist").style.display = "block";
+        } else {
+            console.log("else")
+            document.getElementById("table").style.display = "block";
+            document.getElementById("exist").style.display = "block";
+            document.getElementById("noExist").style.display = "none";
+        }
+    }
+</script>

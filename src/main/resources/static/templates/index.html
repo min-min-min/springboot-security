@@ -1,0 +1,77 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>fuck here</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"
+            integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+</head>
+<body>
+<div style="margin: 15px 0px;"></div>
+<div class="has-success">
+    <div class="col-sm-9">
+        <div class="input-group">
+            <span class="input-group-addon">添加角色：</span>
+            <input type="text" class="form-control" id="inputGroupSuccess2"
+                   aria-describedby="inputGroupSuccess2Status" placeholder="ROLE_"/>
+        </div>
+    </div>
+</div>
+<button type="button" class="btn btn-primary" id="user">确定添加</button>
+
+<div style="margin: 15px 0px;"></div>
+
+<div class="has-success">
+    <div class="col-sm-9">
+        <div class="input-group">
+            <span class="input-group-addon">添加权限：</span>
+            <input type="text" class="form-control" id="inputGroupSuccess3"
+                   aria-describedby="inputGroupSuccess2Status"/>
+        </div>
+    </div>
+</div>
+<button type="button" class="btn btn-primary">确定添加</button>
+
+<div style="margin: 15px 0px;"></div>
+<select class="form-control">
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+</select>
+<div style="margin: 15px 0px;"></div>
+
+<p class="bg-primary" style="line-height: 40px;margin: auto 20px;">&nbsp;&nbsp;&nbsp;&nbsp;角色列表</p>
+
+<label class="checkbox-inline">
+    <input type="checkbox" value="option1"/>Admin
+</label>
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        XXXX
+    </div>
+    <div class="col-md-1"></div>
+</div>
+<p class="bg-primary" style="line-height: 40px;margin: auto 20px;">&nbsp;&nbsp;&nbsp;&nbsp;权限列表</p>
+
+<label class="checkbox-inline">
+    <input type="checkbox" value="option1"/> add
+</label>
+
+</body>
+<script type="text/javascript" th:inline="javascript">
+    $(document).ready(function () {
+        var basePath = [[${#httpServletRequest.getScheme() + "://" + #httpServletRequest.getServerName() + ":" + #httpServletRequest.getServerPort() + #httpServletRequest.getContextPath()}]];
+        $("#user").click(function () {
+            alert(basePath)
+        })
+    })
+</script>
+</html>

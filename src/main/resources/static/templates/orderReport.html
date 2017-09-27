@@ -1,0 +1,187 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>订单报告</title>
+    <style type="text/css">
+        body, table {
+            font-size: 12px;
+        }
+
+        table {
+            table-layout: fixed;
+            empty-cells: show;
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+
+        td {
+            height: 30px;
+        }
+
+        .table {
+            border: 1px solid #cad9ea;
+            color: #666;
+        }
+
+        .table caption {
+            font-weight: bold;
+            font-size: 22px;
+        }
+
+        .table th {
+            background: #6699CC;
+            background-repeat: repeat-x;
+            height: 30px;
+        }
+
+        .table td, .table th {
+            border: 1px solid #cad9ea;
+            padding: 0 1em 0;
+        }
+    </style>
+</head>
+<body>
+<div id="main" style="height:700px"></div>
+<div id="main2" style="height:700px"></div>
+<!-- ECharts单文件引入 -->
+<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    // 路径配置
+    require.config({
+        paths: {
+            echarts: 'http://echarts.baidu.com/build/dist'
+        }
+    });
+
+    // 使用
+    require(
+        [
+            'echarts',
+            'echarts/chart/bar' // 使用柱状图就加载bar模块，按需加载
+        ],
+        function (ec) {
+            // 基于准备好的dom，初始化echarts图表
+            var myChart = ec.init(document.getElementById('main'));
+
+            var myChart2 = ec.init(document.getElementById('main2'));
+
+            var option = {
+                title: {
+                    text: '交寄订单统计-' + [[${country}]],
+                    subtext: '来源:FDSAPI  当地时间:' + [[${time}]]
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['已导入订单数量','已交寄订单数量','已交寄且已回传的订单数量','未交寄订单数量']
+                },
+                toolbox: {
+                    show: false,
+                    feature: {
+                        mark: {show: false},
+                        dataView: {show: false, readOnly: false},
+                        magicType: {show: false, type: ['line', 'bar']},
+                        restore: {show: false},
+                        saveAsImage: {show: false}
+                    }
+                },
+                calculable: true,
+                xAxis: [
+                    {
+                        type: 'value',
+                        boundaryGap: [0, 0.01]
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'category',
+                        data: [[${dateList}]]
+                    }
+                ],
+                series: [
+                    {
+                        name: '已导入订单数量',
+                        type: 'bar',
+                        data: [[${result7}]]
+                    },
+                    {
+                        name: '已交寄订单数量',
+                        type: 'bar',
+                        data: [[${result2}]]
+                    },
+                    {
+                        name: '已交寄且已回传的订单数量',
+                        type: 'bar',
+                        data: [[${result4}]]
+                    },
+                    {
+                        name: '未交寄订单数量',
+                        type: 'bar',
+                        data: [[${result1}]]
+                    }
+                ]
+            };
+
+            var option2 = {
+                title : {
+                    text: '同步订单统计('+[[${date}]]+'，总计：'+[[${allAmount}]]+')-'+[[${country}]],
+                    subtext: ''
+                },
+                tooltip : {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data:['同步数量']
+                },
+                toolbox: {
+                    show : false,
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: false},
+                        magicType : {show: true, type: ['line', 'bar']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : 'category',
+                        data :[
+                            '00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'
+                        ]
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value'
+                    }
+                ],
+                series : [
+                    {
+                        name:'同步数量',
+                        type:'bar',
+                        data:[[${result6}]],
+                        markPoint : {
+                            data : [
+                                {type : 'max', name: '最大值'},
+                                {type : 'min', name: '最小值'}
+                            ]
+                        },
+                        markLine : {
+                            data : [
+                                {type : 'average', name: '平均值'}
+                            ]
+                        }
+                    }
+                ]
+            };
+            // 为echarts对象加载数据
+            myChart.setOption(option);
+            myChart2.setOption(option2);
+        }
+    );
+</script>
+</body>
+</html>

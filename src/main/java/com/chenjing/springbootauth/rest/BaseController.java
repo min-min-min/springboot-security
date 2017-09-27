@@ -71,4 +71,5 @@ public class BaseController {
     public Integer register(@RequestBody User addedUser) throws AuthenticationException {
         return authService.register(addedUser);
     }
+
 }
